@@ -21,13 +21,11 @@ package org.codehaus.plexus.languages.java.jpms;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -36,6 +34,10 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.codehaus.plexus.languages.java.jpms.JavaModuleDescriptor.JavaProvides;
+import org.jspecify.annotations.Nullable;
+
+import static java.util.Collections.singletonMap;
+import static java.util.Collections.unmodifiableMap;
 
 /**
  * Maps artifacts to modules and analyzes the type of required modules
@@ -107,14 +109,13 @@ public class LocationManager {
             MainClassModuleNameExtractor extractor = new MainClassModuleNameExtractor(request.getJdkHome());
 
             @Override
-            public String extract(Path file) throws IOException {
+            public @Nullable String extract(Path file) throws IOException {
                 if (request.getJdkHome() != null) {
                     return extractor
-                            .extract(Collections.singletonMap(file, file))
+                            .extract(singletonMap(file, file))
                             .get(file);
-                } else {
-                    return CmdModuleNameExtractor.getModuleName(file);
                 }
+                return CmdModuleNameExtractor.getModuleName(file);
             }
         };
 
@@ -226,8 +227,8 @@ public class LocationManager {
 
             selectRequires(
                     mainModuleDescriptor,
-                    Collections.unmodifiableMap(availableNamedModules),
-                    Collections.unmodifiableMap(availableProviders),
+                    unmodifiableMap(availableNamedModules),
+                    unmodifiableMap(availableProviders),
                     requiredNamedModules,
                     true,
                     true,
@@ -237,8 +238,8 @@ public class LocationManager {
         for (String additionalModule : request.getAdditionalModules()) {
             selectModule(
                     additionalModule,
-                    Collections.unmodifiableMap(availableNamedModules),
-                    Collections.unmodifiableMap(availableProviders),
+                    unmodifiableMap(availableNamedModules),
+                    unmodifiableMap(availableProviders),
                     requiredNamedModules,
                     true,
                     true,
@@ -248,8 +249,8 @@ public class LocationManager {
         Set<String> collectedModules = new HashSet<>(requiredNamedModules.size());
 
         for (Entry<T, JavaModuleDescriptor> entry : pathElements.entrySet()) {
-            if (entry.getValue() != null
-                    && requiredNamedModules.contains(entry.getValue().name())) {
+            if (entry.getValue() != null &&
+                    requiredNamedModules.contains(entry.getValue().name())) {
                 // Consider strategies how to handle duplicate modules by name
                 // For now only add first on modulePath, just ignore others,
                 //   This has effectively the same result as putting it on the modulePath, but might better help
@@ -362,11 +363,11 @@ public class LocationManager {
             boolean includeStatic) {
         for (JavaModuleDescriptor.JavaRequires requires : module.requires()) {
             // includeTransitive is one level deeper compared to includeStatic
-            if (isRootModule
-                    || includeStatic
-                    || includeAsTransitive
-                    || !requires.modifiers().contains(JavaModuleDescriptor.JavaRequires.JavaModifier.STATIC)
-                    || requires.modifiers().contains(JavaModuleDescriptor.JavaRequires.JavaModifier.TRANSITIVE)) {
+            if (isRootModule ||
+                    includeStatic ||
+                    includeAsTransitive ||
+                    !requires.modifiers().contains(JavaModuleDescriptor.JavaRequires.JavaModifier.STATIC) ||
+                    requires.modifiers().contains(JavaModuleDescriptor.JavaRequires.JavaModifier.TRANSITIVE)) {
                 selectModule(
                         requires.name(),
                         availableModules,

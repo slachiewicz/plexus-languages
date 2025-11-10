@@ -20,8 +20,6 @@ package org.codehaus.plexus.languages.java.jpms;
  */
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Collections;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,6 +29,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -53,7 +52,7 @@ class LocationManagerIT {
 
     private LocationManager locationManager;
 
-    final Path mockModuleInfoJava = Paths.get("src/test/test-data/mock/module-info.java");
+    final Path mockModuleInfoJava = Path.of("src/test/test-data/mock/module-info.java");
 
     @BeforeEach
     void onSetup() {
@@ -67,12 +66,12 @@ class LocationManagerIT {
 
     @Test
     void manifestWithoutReflectRequires() throws Exception {
-        Path abc = Paths.get("src/test/test-data/manifest.without/out");
+        Path abc = Path.of("src/test/test-data/manifest.without/out");
         JavaModuleDescriptor descriptor =
                 JavaModuleDescriptor.newModule("base").requires("any").build();
         when(qdoxParser.fromSourcePath(any(Path.class))).thenReturn(descriptor);
         ResolvePathsRequest<Path> request =
-                ResolvePathsRequest.ofPaths(Collections.singletonList(abc)).setMainModuleDescriptor(mockModuleInfoJava);
+                ResolvePathsRequest.ofPaths(singletonList(abc)).setMainModuleDescriptor(mockModuleInfoJava);
 
         ResolvePathsResult<Path> result = locationManager.resolvePaths(request);
 
@@ -85,12 +84,12 @@ class LocationManagerIT {
 
     @Test
     void emptyWithReflectRequires() throws Exception {
-        Path abc = Paths.get("src/test/test-data/empty/out");
+        Path abc = Path.of("src/test/test-data/empty/out");
         JavaModuleDescriptor descriptor =
                 JavaModuleDescriptor.newModule("base").requires("a.b.c").build();
         when(qdoxParser.fromSourcePath(any(Path.class))).thenReturn(descriptor);
         ResolvePathsRequest<Path> request =
-                ResolvePathsRequest.ofPaths(Collections.singletonList(abc)).setMainModuleDescriptor(mockModuleInfoJava);
+                ResolvePathsRequest.ofPaths(singletonList(abc)).setMainModuleDescriptor(mockModuleInfoJava);
 
         ResolvePathsResult<Path> result = locationManager.resolvePaths(request);
 
@@ -103,16 +102,16 @@ class LocationManagerIT {
 
     @Test
     void resolvePathWithException() {
-        Path p = Paths.get("src/test/test-data/jar.empty.invalid.name/101-1.0.0-SNAPSHOT.jar");
+        Path p = Path.of("src/test/test-data/jar.empty.invalid.name/101-1.0.0-SNAPSHOT.jar");
         ResolvePathRequest<Path> request = ResolvePathRequest.ofPath(p);
         assertThrows(RuntimeException.class, () -> locationManager.resolvePath(request));
     }
 
     @Test
     void classicJarNameStartsWithNumber() throws Exception {
-        Path p = Paths.get("src/test/test-data/jar.empty.invalid.name/101-1.0.0-SNAPSHOT.jar");
+        Path p = Path.of("src/test/test-data/jar.empty.invalid.name/101-1.0.0-SNAPSHOT.jar");
         ResolvePathsRequest<Path> request =
-                ResolvePathsRequest.ofPaths(Collections.singletonList(p)).setMainModuleDescriptor(mockModuleInfoJava);
+                ResolvePathsRequest.ofPaths(singletonList(p)).setMainModuleDescriptor(mockModuleInfoJava);
 
         ResolvePathsResult<Path> result = locationManager.resolvePaths(request);
 

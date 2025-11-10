@@ -28,10 +28,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+
+import static java.util.Collections.emptyMap;
 
 /**
  * Extract the module name by calling the main method with an external JVM
@@ -54,7 +55,7 @@ public class MainClassModuleNameExtractor {
         try (InputStream is =
                 MainClassModuleNameExtractor.class.getResourceAsStream("/META-INF/versions/9/" + classResourcePath)) {
             if (is == null) {
-                return Collections.emptyMap();
+                return emptyMap();
             }
             Path target = workDir.resolve(classResourcePath);
 

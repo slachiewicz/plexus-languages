@@ -24,7 +24,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
+
+import static java.util.Collections.emptyList;
 
 /**
  * Contains all information required to analyze the project
@@ -187,7 +188,7 @@ public abstract class ResolvePathsRequest<T> {
 
     public Collection<String> getAdditionalModules() {
         if (additionalModules == null) {
-            additionalModules = Collections.emptyList();
+            additionalModules = emptyList();
         }
         return additionalModules;
     }

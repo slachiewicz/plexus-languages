@@ -114,11 +114,11 @@ public class ResolvePathsResult<T> {
 
     @Override
     public String toString() {
-        return "ResolvePathsResult{" + System.lineSeparator() + "mainModuleDescriptor="
-                + mainModuleDescriptor + System.lineSeparator() + ", pathElements="
-                + pathElements + System.lineSeparator() + ", modulepathElements="
-                + modulepathElements + System.lineSeparator() + ", classpathElements="
-                + classpathElements + System.lineSeparator() + ", pathExceptions="
-                + pathExceptions + System.lineSeparator() + '}';
+        return "ResolvePathsResult{" + System.lineSeparator() + "mainModuleDescriptor=" +
+                mainModuleDescriptor + System.lineSeparator() + ", pathElements=" +
+                pathElements + System.lineSeparator() + ", modulepathElements=" +
+                modulepathElements + System.lineSeparator() + ", classpathElements=" +
+                classpathElements + System.lineSeparator() + ", pathExceptions=" +
+                pathExceptions + System.lineSeparator() + '}';
     }
 }

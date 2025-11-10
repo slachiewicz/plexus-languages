@@ -53,8 +53,8 @@ abstract class AbstractBinaryModuleInfoParser implements ModuleInfoParser {
                     if (moduleInfo == null) {
                         Manifest manifest = jarFile.getManifest();
 
-                        if (manifest != null
-                                && "true"
+                        if (manifest != null &&
+                                "true"
                                         .equalsIgnoreCase(
                                                 manifest.getMainAttributes().getValue("Multi-Release"))) {
                             int javaVersion =

@@ -1,29 +1,12 @@
 package org.codehaus.plexus.languages.java.jpms;
 
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
-
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+
+import static java.util.Collections.emptySet;
+import static java.util.Collections.unmodifiableSet;
 
 /**
  * Simple representation of a ModuleDescriptor containing info required by this plugin.
@@ -55,19 +38,19 @@ public class JavaModuleDescriptor {
     }
 
     public Set<JavaRequires> requires() {
-        return Collections.unmodifiableSet(requires);
+        return unmodifiableSet(requires);
     }
 
     public Set<JavaExports> exports() {
-        return Collections.unmodifiableSet(exports);
+        return unmodifiableSet(exports);
     }
 
     public Set<JavaProvides> provides() {
-        return Collections.unmodifiableSet(provides);
+        return unmodifiableSet(provides);
     }
 
     public Set<String> uses() {
-        return Collections.unmodifiableSet(uses);
+        return unmodifiableSet(uses);
     }
 
     public static JavaModuleDescriptor.Builder newModule(String name) {
@@ -113,13 +96,13 @@ public class JavaModuleDescriptor {
 
     @Override
     public String toString() {
-        return "JavaModuleDescriptor{" + "name='"
-                + name + '\'' + ", automatic="
-                + automatic + ", requires="
-                + requires + ", exports="
-                + exports + ", uses="
-                + uses + ", provides="
-                + provides + '}';
+        return "JavaModuleDescriptor{" + "name='" +
+                name + '\'' + ", automatic=" +
+                automatic + ", requires=" +
+                requires + ", exports=" +
+                exports + ", uses=" +
+                uses + ", provides=" +
+                provides + '}';
     }
 
     /**
@@ -230,7 +213,7 @@ public class JavaModuleDescriptor {
         }
 
         private JavaRequires(String name) {
-            this.modifiers = Collections.emptySet();
+            this.modifiers = emptySet();
             this.name = name;
         }
 

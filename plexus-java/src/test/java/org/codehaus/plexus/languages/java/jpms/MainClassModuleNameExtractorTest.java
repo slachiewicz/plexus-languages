@@ -21,11 +21,11 @@ package org.codehaus.plexus.languages.java.jpms;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Collections;
 
 import org.junit.jupiter.api.condition.DisabledOnJre;
 import org.junit.jupiter.api.condition.JRE;
+
+import static java.util.Collections.singletonMap;
 
 @DisabledOnJre(value = JRE.JAVA_8, disabledReason = "Requires Java 9+ Module System")
 public class MainClassModuleNameExtractorTest extends AbstractFilenameModuleNameExtractorTest {
@@ -33,11 +33,11 @@ public class MainClassModuleNameExtractorTest extends AbstractFilenameModuleName
     protected ModuleNameExtractor getExtractor() {
         return new ModuleNameExtractor() {
             final MainClassModuleNameExtractor extractor =
-                    new MainClassModuleNameExtractor(Paths.get(System.getProperty("java.home")));
+                    new MainClassModuleNameExtractor(Path.of(System.getProperty("java.home")));
 
             @Override
             public String extract(Path file) throws IOException {
-                return extractor.extract(Collections.singletonMap(file, file)).get(file);
+                return extractor.extract(singletonMap(file, file)).get(file);
             }
         };
     }

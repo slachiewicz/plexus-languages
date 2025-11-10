@@ -136,8 +136,7 @@ public final class JavaClassfileVersion {
         final int prime = 31;
         int result = 1;
         result = prime * result + major;
-        result = prime * result + minor;
-        return result;
+        return prime * result + minor;
     }
 
     @Override

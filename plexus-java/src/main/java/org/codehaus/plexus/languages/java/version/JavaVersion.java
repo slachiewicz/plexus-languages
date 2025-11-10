@@ -119,11 +119,11 @@ public class JavaVersion implements Comparable<JavaVersion> {
     private int suffixRate(String suffix) {
         if ("-ea".equals(suffix)) {
             return -100;
-        } else if ("".equals(suffix)) {
-            return 0;
-        } else {
-            return 10;
         }
+        if ("".equals(suffix)) {
+            return 0;
+        }
+        return 10;
     }
 
     /**
@@ -174,9 +174,8 @@ public class JavaVersion implements Comparable<JavaVersion> {
     public JavaVersion asMajor() {
         if (!isMajor) {
             return new JavaVersion(rawVersion.substring(2), true);
-        } else {
-            return this;
         }
+        return this;
     }
 
     /**

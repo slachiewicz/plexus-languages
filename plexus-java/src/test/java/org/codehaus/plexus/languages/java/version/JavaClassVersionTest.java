@@ -5,9 +5,7 @@ import java.io.UncheckedIOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -15,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -36,10 +35,10 @@ class JavaClassVersionTest {
     static Stream<Path> provideClassFiles() {
         List<Path> paths;
         try (DirectoryStream<Path> directoryStream =
-                Files.newDirectoryStream(Paths.get("src/test/test-data/classfile.version/"), "*-[0-9]?.class")) {
+                Files.newDirectoryStream(Path.of("src/test/test-data/classfile.version/"), "*-[0-9]?.class")) {
             paths = StreamSupport.stream(directoryStream.spliterator(), false)
                     .filter(Files::isRegularFile)
-                    .collect(Collectors.toList());
+                    .collect(toList());
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
         }
@@ -48,7 +47,7 @@ class JavaClassVersionTest {
 
     @Test
     void javaClassPreview() {
-        Path previewFile = Paths.get("src/test/test-data/classfile.version/helloworld-preview.class");
+        Path previewFile = Path.of("src/test/test-data/classfile.version/helloworld-preview.class");
         JavaClassfileVersion previewClass = JavaClassfileVersion.of(previewFile);
         assertTrue(previewClass.isPreview());
         assertEquals(20 + 44, previewClass.majorVersion());
